@@ -45,7 +45,8 @@ columns in `data`. The names must be String or Symbol or anything that converts
 to Symbol.
 
 """
-SimData(fd, vars=(), data=zeros(0,0)) = SimData(fd, tuple(Symbol.(vars)...), data)
+SimData(fd, vars::AbstractVector{<:Union{Symbol, ModelVariable, <:AbstractString}}, 
+        data=Array{Float64}(undef, fd isa Integer ? 0 : length(fd), length(vars))) = SimData(first(fd), tuple(Symbol.(vars)...), data)
 SimData(rng::AbstractUnitRange{<:Integer}) = SimData(first(rng), (), zeros(length(rng),0))
 
 TimeSeriesEcon.firstdate(sd::SimData) = getfield(sd, :firstdate)
